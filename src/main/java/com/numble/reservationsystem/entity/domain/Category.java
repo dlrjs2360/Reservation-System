@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,7 +24,8 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     @Column
-    private List<Show> showList;
+    private List<Show> showList = new ArrayList<>();
+
 }
