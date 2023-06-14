@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.CurState;
 import com.numble.reservationsystem.entity.dto.ShowRequestDto;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Table(name = "show")
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Show {
+public class Show extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,7 +50,7 @@ public class Show {
     @JoinColumn(name = "operator_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
