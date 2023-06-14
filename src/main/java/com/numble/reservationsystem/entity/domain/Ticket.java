@@ -21,7 +21,7 @@ public class Ticket {
     private Long id;
 
     @Column(nullable = false)
-    private boolean isCancled;
+    private boolean isCanceled;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
