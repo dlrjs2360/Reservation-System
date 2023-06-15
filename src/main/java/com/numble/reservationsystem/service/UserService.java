@@ -27,6 +27,7 @@ public class UserService {
     @Value("${spring.jwt.password}")
     private String SECRET_KEY;
 
+    @Transactional
     public UserResponseDto register(UserRequestDto requestDto) {
         // 이미 존재하는 유저인지 확인 예외처리 필요
         User user = User.toEntity(requestDto);
@@ -34,6 +35,7 @@ public class UserService {
         return UserResponseDto.of(userRepository.save(user));
     }
 
+    @Transactional
     public UserResponseDto login(UserRequestDto requestDto, HttpServletResponse response) {
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow();
 
@@ -49,6 +51,10 @@ public class UserService {
         jwtProvider.setHeaderRefreshToken(response, token.getRefreshToken());
 
         return UserResponseDto.of(user);
+    }
+
+    public UserResponseDto findMemberByEmail(String email) {
+        return UserResponseDto.of(userRepository.findByEmail(email).orElseThrow());
     }
 
     public boolean isValidPassword(String input, String encoded) {
