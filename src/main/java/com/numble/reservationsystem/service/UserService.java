@@ -43,7 +43,7 @@ public class UserService {
             return null; // 예외 처리 추가
         }
 
-        // 액세스, 리프레쉬 토큰 생성
+        // 액세스,리프레쉬 토큰 생성
         Token token = jwtProvider.generateJwtToken(user.getEmail(), SECRET_KEY);
 
         // 헤더에 토큰 저장
