@@ -1,10 +1,10 @@
-package com.numble.reservationsystem.entity.dto;
+package com.numble.reservationsystem.entity.dto.show;
 
 import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.CurState;
 import com.numble.reservationsystem.entity.domain.Show;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class ShowResponseDto {
     private String content;
     private String startTime;
     private String endTime;
-    private Date date;
+    private LocalDate date;
     private Long price;
     private String location;
     private CurState curState;

@@ -1,16 +1,13 @@
-package com.numble.reservationsystem.entity.dto;
+package com.numble.reservationsystem.entity.dto.show;
 
 import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.CurState;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
-@Builder
 public class ShowRequestDto {
     private Long id;
     private String title;
