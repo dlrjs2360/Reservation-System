@@ -3,14 +3,14 @@ package com.numble.reservationsystem.entity.domain;
 import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.CurState;
-import com.numble.reservationsystem.entity.dto.ShowRequestDto;
+import com.numble.reservationsystem.entity.dto.show.ShowRequestDto;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -36,7 +36,7 @@ public class Show extends BaseEntity {
     private String endTime;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(nullable = false)
     private Long price;
