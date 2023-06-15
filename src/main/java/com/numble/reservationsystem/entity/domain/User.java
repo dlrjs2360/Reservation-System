@@ -33,7 +33,7 @@ public class User {
     private String role;
 
     @Column(nullable = false)
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Column
     private String businessNumber;
