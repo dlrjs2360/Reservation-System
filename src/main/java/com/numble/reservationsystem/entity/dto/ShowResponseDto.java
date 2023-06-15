@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.dto;
 
+import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.CurState;
 import com.numble.reservationsystem.entity.domain.Show;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class ShowResponseDto {
     private Long price;
     private String location;
     private CurState curState;
-    private String category;
+    private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -36,7 +37,7 @@ public class ShowResponseDto {
             .price(show.getPrice())
             .location(show.getLocation())
             .curState(show.getCurState())
-            .category(show.getCategory().getName())
+            .category(show.getCategory())
             .createdAt(show.getCreatedAt())
             .updatedAt(show.getUpdatedAt())
             .build();

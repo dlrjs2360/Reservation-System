@@ -1,7 +1,7 @@
 package com.numble.reservationsystem.entity.dto;
 
+import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.CurState;
-import com.numble.reservationsystem.entity.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +20,5 @@ public class ShowRequestDto {
     private Long price;
     private String location;
     private CurState curState;
-    private String category;
+    private Category category;
 }
