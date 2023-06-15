@@ -1,5 +1,7 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
+import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,4 +40,17 @@ public class User {
     @Column
     private String businessNumber;
 
+    public void encodePassword(String password) {
+        this.password = password;
+    }
+
+    public static User toEntity(UserRequestDto requestDto) {
+        return User.builder()
+            .name(requestDto.getName())
+            .email(requestDto.getEmail())
+            .phone(requestDto.getPhone())
+            .role(requestDto.getRole())
+            .businessNumber(requestDto.getBusinessNumber())
+            .build();
+    }
 }
