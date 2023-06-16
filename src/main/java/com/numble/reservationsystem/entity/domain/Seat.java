@@ -24,6 +24,9 @@ public class Seat {
     @Column(nullable = false)
     private String number;
 
+    @Column(nullable = false)
+    private String status;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "show_id")
     private Show show;
