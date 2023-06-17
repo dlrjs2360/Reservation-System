@@ -1,5 +1,8 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.SeatStatus;
+import com.numble.reservationsystem.entity.SeatType;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,16 +21,19 @@ public class Seat {
     @Column(name = "seat_id ")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
+    private SeatType type;
 
     @Column(nullable = false)
     private String number;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private SeatStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "show_id")
     private Show show;
+
 }
