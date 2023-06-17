@@ -1,7 +1,7 @@
 package com.numble.reservationsystem.entity.dto.user;
 
+import com.numble.reservationsystem.entity.UserRole;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -11,7 +11,7 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String phone;
-    private String role;
+    private UserRole role;
     private boolean isDeleted;
     private String businessNumber;
 }

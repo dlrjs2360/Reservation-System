@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.UserRole;
 import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
 import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
 import lombok.AccessLevel;
@@ -31,8 +32,9 @@ public class User {
     @Column(nullable = false)
     private String phone;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private UserRole role;
 
     @Column(nullable = false)
     private boolean isDeleted = false;
