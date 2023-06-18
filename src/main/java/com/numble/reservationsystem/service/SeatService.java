@@ -6,6 +6,7 @@ import com.numble.reservationsystem.entity.domain.Seat;
 import com.numble.reservationsystem.entity.domain.Show;
 import com.numble.reservationsystem.entity.dto.Seat.SeatRegisterDto;
 import com.numble.reservationsystem.entity.dto.Seat.SeatResponseDto;
+import com.numble.reservationsystem.entity.dto.Seat.SeatUpdateRequestDto;
 import com.numble.reservationsystem.repository.SeatRepository;
 import com.numble.reservationsystem.repository.ShowRepository;
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ public class SeatService {
      * 2. 등록한 시점에는 예약가능 상태? -> 공연이 오픈되어야 예약 가능 상태가 된다.
      * 3. 후에 좌석 예약시에는 AVAILABLE만 예약이 가능하다.
      * */
-    public List<SeatResponseDto> registerSeats(SeatRegisterDto seatRegisterDto) {
+    @Transactional
+    public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto) {
         // 공연 관리자만 가능해야 함.
         Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
         Show show = showRepository.findById(seatRegisterDto.getShowId()).orElseThrow();
@@ -61,18 +63,23 @@ public class SeatService {
 
     /*
      * 좌석 수정 기능
-     * 1. 이미 좌석 번호가 있으면 좌석 번호는 수정 불가능
+     * 1. 이미 등록된 좌석 번호로는 좌석 번호는 수정 불가능
      * 2. 좌석 타입 변경 가능
      * 3. 공연 ID 변경 불가능
+     * 4. 공연 삭제도 포함
+     *      a. 이미 예매된 좌석 즉, Status가 BOOKED면 삭제 불가능
+     *      b. 공연이 삭제되면 모든 좌석도 삭제되어야 함.
+     * 5. 수정로직은 @Transactional을 통한 더티체킹을 사용한다.
      * */
-
-    /*
-     * 좌석 삭제 기능
-     * 1. 이미 예매된 좌석 즉, Status가 BOOKED면 삭제 불가능
-     * 2. 공연이 삭제되면 모든 좌석도 삭제되어야 함.
-     * */
-
-
+    @Transactional
+    public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto) {
+        Seat seat = seatRepository.findById(updateRequestDto.getId()).orElseThrow();
+        if (updateRequestDto.getStatus().equals(SeatStatus.FORBIDDEN) && seat.getStatus().equals(SeatStatus.BOOKED)) {
+            log.info("예매된 좌석은 비공개처리 불가능");
+        }
+        seat.update(updateRequestDto);
+        return SeatResponseDto.of(seat);
+    }
 
     /*
     * 좌석 조회 기능
