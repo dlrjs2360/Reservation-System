@@ -69,7 +69,7 @@ public class SeatService {
      * 4. 공연 삭제도 포함
      *      a. 이미 예매된 좌석 즉, Status가 BOOKED면 삭제 불가능
      *      b. 공연이 삭제되면 모든 좌석도 삭제되어야 함.
-     * 5. 수정로직은 @Transactional을 통한 더티체킹을 사용한다.
+     * 5. 수정로직은 Transactional을 통한 더티체킹을 사용한다.
      * */
     @Transactional
     public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto) {
