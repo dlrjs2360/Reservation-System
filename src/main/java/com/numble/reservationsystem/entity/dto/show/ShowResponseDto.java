@@ -23,6 +23,7 @@ public class ShowResponseDto {
     private String location;
     private CurState curState;
     private Category category;
+    private String operatorEmail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -38,6 +39,7 @@ public class ShowResponseDto {
             .location(show.getLocation())
             .curState(show.getCurState())
             .category(show.getCategory())
+            .operatorEmail(show.getUser().getEmail())
             .createdAt(show.getCreatedAt())
             .updatedAt(show.getUpdatedAt())
             .build();
