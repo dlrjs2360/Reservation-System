@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -27,19 +28,19 @@ public class UserController {
 
     @PostMapping("/signup")
     @Transactional
-    public ResponseEntity<UserResponseDto> signup(UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> signup(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(200).body(userService.register(userRequestDto));
     }
 
     @PostMapping("/login")
     @Transactional
-    public ResponseEntity<UserResponseDto> login(UserRequestDto userRequestDto, @ApiIgnore HttpServletResponse response) {
+    public ResponseEntity<UserResponseDto> login(@RequestBody UserRequestDto userRequestDto, @ApiIgnore HttpServletResponse response) {
         return ResponseEntity.status(200).body(userService.login(userRequestDto,response));
     }
 
     @GetMapping("/profile")
     @Transactional(readOnly = true)
-    public ResponseEntity<UserResponseDto> findMyProfile(Authentication authentication) {
+    public ResponseEntity<UserResponseDto> findMyProfile(@ApiIgnore Authentication authentication) {
         return ResponseEntity.status(200).body(userService.findMemberByEmail(authentication.getName()));
     }
 
