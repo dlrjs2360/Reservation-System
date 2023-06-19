@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.dto.user;
 
+import com.numble.reservationsystem.entity.UserRole;
 import com.numble.reservationsystem.entity.domain.User;
 import javax.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class UserResponseDto {
     private String email;
     private String password;
     private String phone;
-    private String role;
+    private UserRole role;
     private boolean isDeleted;
     private String businessNumber;
 
