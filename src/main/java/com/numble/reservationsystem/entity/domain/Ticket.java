@@ -28,8 +28,8 @@ public class Ticket {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "show_id")
-    private Show show;
+    @JoinColumn(name = "concert_id")
+    private Concert concert;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "seat_id")

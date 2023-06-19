@@ -1,4 +1,4 @@
-package com.numble.reservationsystem.entity.dto.Seat;
+package com.numble.reservationsystem.entity.dto.seat;
 
 import com.numble.reservationsystem.entity.domain.Seat;
 import java.util.List;
