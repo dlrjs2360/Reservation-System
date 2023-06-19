@@ -1,5 +1,5 @@
 package com.numble.reservationsystem.entity;
 
-public enum CurState {
+public enum ConcertState {
     OPENED, DELETED, EXPIRED, WAITING
 }

@@ -1,4 +1,4 @@
-package com.numble.reservationsystem.entity.dto.Seat;
+package com.numble.reservationsystem.entity.dto.seat;
 
 import com.numble.reservationsystem.entity.domain.Seat;
 import java.util.List;
@@ -11,12 +11,12 @@ import lombok.Data;
 @Builder
 public class SeatRegisterResponseDto {
 
-    private Long showId;
+    private Long concertId;
     private List<SeatResponseDto> registeredSeats;
 
     public static SeatRegisterResponseDto of(Seat seat,List<SeatResponseDto> registeredSeats) {
         return SeatRegisterResponseDto.builder()
-            .showId(seat.getId())
+            .concertId(seat.getId())
             .registeredSeats(registeredSeats)
             .build();
     }

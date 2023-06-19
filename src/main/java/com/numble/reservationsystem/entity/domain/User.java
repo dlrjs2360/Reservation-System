@@ -1,6 +1,7 @@
 package com.numble.reservationsystem.entity.domain;
 
 import com.numble.reservationsystem.entity.UserRole;
+import com.numble.reservationsystem.entity.UserState;
 import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
 import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
 import lombok.AccessLevel;
@@ -18,6 +19,7 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -36,8 +38,9 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean isDeleted = false;
+    private UserState userState;
 
     @Column
     private String businessNumber;
@@ -52,6 +55,7 @@ public class User {
             .email(requestDto.getEmail())
             .phone(requestDto.getPhone())
             .role(requestDto.getRole())
+            .userState(requestDto.getUserState())
             .businessNumber(requestDto.getBusinessNumber())
             .build();
     }

@@ -1,9 +1,8 @@
-package com.numble.reservationsystem.entity.dto.Seat;
+package com.numble.reservationsystem.entity.dto.seat;
 
 import com.numble.reservationsystem.entity.SeatStatus;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.domain.Seat;
-import com.numble.reservationsystem.entity.domain.Show;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,7 @@ public class SeatResponseDto {
     private SeatType type;
     private String number;
     private SeatStatus status;
-    private String showTitle;
+    private String concertTitle;
 
     public static SeatResponseDto of(Seat seat) {
         return SeatResponseDto.builder()
@@ -24,7 +23,7 @@ public class SeatResponseDto {
             .type(seat.getType())
             .number(seat.getNumber())
             .status(seat.getStatus())
-            .showTitle(seat.getShow().getTitle())
+            .concertTitle(seat.getConcert().getTitle())
             .build();
     }
 }

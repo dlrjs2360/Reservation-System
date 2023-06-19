@@ -31,6 +31,9 @@ public class SecurityConfig {
             /* swagger v3 */
             "/v3/api-docs/**",
             "/swagger-ui/**",
+            /* user-api */
+            "/api/user/signup",
+            "/api/user/login"
     };
 
     @Bean

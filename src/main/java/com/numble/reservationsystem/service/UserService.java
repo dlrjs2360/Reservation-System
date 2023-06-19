@@ -6,6 +6,8 @@ import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
 import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
 import com.numble.reservationsystem.repository.UserRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +57,12 @@ public class UserService {
 
     public UserResponseDto findMemberByEmail(String email) {
         return UserResponseDto.of(userRepository.findByEmail(email).orElseThrow());
+    }
+
+    public List<UserResponseDto> findAll() {
+        return userRepository.findAll().stream()
+            .map(UserResponseDto::of)
+            .collect(Collectors.toList());
     }
 
     public boolean isValidPassword(String input, String encoded) {

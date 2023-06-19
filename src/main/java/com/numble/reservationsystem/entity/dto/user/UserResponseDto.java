@@ -1,7 +1,8 @@
 package com.numble.reservationsystem.entity.dto.user;
 
+import com.numble.reservationsystem.entity.UserRole;
+import com.numble.reservationsystem.entity.UserState;
 import com.numble.reservationsystem.entity.domain.User;
-import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,8 @@ public class UserResponseDto {
     private String email;
     private String password;
     private String phone;
-    private String role;
-    private boolean isDeleted;
+    private UserRole role;
+    private UserState userState;
     private String businessNumber;
 
     public static UserResponseDto of(User user) {
@@ -28,7 +29,7 @@ public class UserResponseDto {
             .password(user.getPassword())
             .phone(user.getPhone())
             .role(user.getRole())
-            .isDeleted(user.isDeleted())
+            .userState(user.getUserState())
             .businessNumber(user.getBusinessNumber())
             .build();
     }

@@ -2,8 +2,8 @@ package com.numble.reservationsystem.entity.domain;
 
 import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.Category;
-import com.numble.reservationsystem.entity.CurState;
-import com.numble.reservationsystem.entity.dto.show.ShowRequestDto;
+import com.numble.reservationsystem.entity.ConcertState;
+import com.numble.reservationsystem.entity.dto.concert.ConcertRequestDto;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,13 +14,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "show")
+@Table(name = "concert")
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Show extends BaseEntity {
+public class Concert extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "concert_id")
     private Long id;
 
     @Column(nullable = false)
@@ -46,18 +47,18 @@ public class Show extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CurState curState;
+    private ConcertState concertState;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "operator_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public static Show toEntity(ShowRequestDto requestDto, User user) {
-        return Show.builder()
+    public static Concert toEntity(ConcertRequestDto requestDto, User user) {
+        return Concert.builder()
             .title(requestDto.getTitle())
             .content(requestDto.getContent())
             .startTime(requestDto.getStartTime())
@@ -65,14 +66,16 @@ public class Show extends BaseEntity {
             .date(requestDto.getDate())
             .price(requestDto.getPrice())
             .location(requestDto.getLocation())
-            .curState(requestDto.getCurState())
+            .category(requestDto.getCategory())
+            .concertState(requestDto.getConcertState())
             .user(user)
             .build();
     }
 
-    public void update(ShowRequestDto requestDto) {
+    public void update(ConcertRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.category = requestDto.getCategory();
         this.startTime = requestDto.getStartTime();
         this.endTime = requestDto.getEndTime();
         this.date = requestDto.getDate();

@@ -2,7 +2,7 @@ package com.numble.reservationsystem.entity.domain;
 
 import com.numble.reservationsystem.entity.SeatStatus;
 import com.numble.reservationsystem.entity.SeatType;
-import com.numble.reservationsystem.entity.dto.Seat.SeatUpdateRequestDto;
+import com.numble.reservationsystem.entity.dto.seat.SeatUpdateRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +33,8 @@ public class Seat {
     private SeatStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "show_id")
-    private Show show;
+    @JoinColumn(name = "concert_id")
+    private Concert concert;
 
     /*
     * 1. 이미 등록된 좌석 번호로는 수정 불가능
