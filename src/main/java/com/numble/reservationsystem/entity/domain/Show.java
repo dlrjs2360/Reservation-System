@@ -56,7 +56,7 @@ public class Show extends BaseEntity {
     @JoinColumn(name = "operator_id")
     private User user;
 
-    public static Show toEntity(ShowRequestDto requestDto) {
+    public static Show toEntity(ShowRequestDto requestDto, User user) {
         return Show.builder()
             .title(requestDto.getTitle())
             .content(requestDto.getContent())
@@ -66,6 +66,7 @@ public class Show extends BaseEntity {
             .price(requestDto.getPrice())
             .location(requestDto.getLocation())
             .curState(requestDto.getCurState())
+            .user(user)
             .build();
     }
 
@@ -77,5 +78,9 @@ public class Show extends BaseEntity {
         this.date = requestDto.getDate();
         this.price = requestDto.getPrice();
         this.location = requestDto.getLocation();
+    }
+
+    public boolean checkEmail(String userEmail) {
+        return this.user.getEmail().equals(userEmail);
     }
 }
