@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,12 +48,11 @@ public class SeatService {
             log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
         }
 
-        Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
-
         if (!user.getRole().equals(UserRole.ADMIN) && !concert.checkEmail(userEmail)) {
             log.info("공연 등록자와 등록자를 제외하면 좌석 등록 불가능");
         }
 
+        Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
         List<SeatResponseDto> seatList = new ArrayList<>();
 
         // 로직 분리 필요
@@ -106,4 +106,13 @@ public class SeatService {
     public SeatResponseDto getSeatInfo(Long seadId) {
         return SeatResponseDto.of(seatRepository.findById(seadId).orElseThrow());
     }
+
+    public List<SeatResponseDto> findSeatsByConcertId(Long concertId) {
+        Concert concert = concertRepository.findById(concertId).orElseThrow();
+        return seatRepository.findAll().stream()
+            .filter(s -> s.getConcert().equals(concert))
+            .map(SeatResponseDto::of)
+            .collect(Collectors.toList());
+    }
+
 }

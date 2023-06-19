@@ -15,7 +15,7 @@ public class SeatResponseDto {
     private SeatType type;
     private String number;
     private SeatStatus status;
-    private String showTitle;
+    private String concertTitle;
 
     public static SeatResponseDto of(Seat seat) {
         return SeatResponseDto.builder()
@@ -23,7 +23,7 @@ public class SeatResponseDto {
             .type(seat.getType())
             .number(seat.getNumber())
             .status(seat.getStatus())
-            .showTitle(seat.getConcert().getTitle())
+            .concertTitle(seat.getConcert().getTitle())
             .build();
     }
 }
