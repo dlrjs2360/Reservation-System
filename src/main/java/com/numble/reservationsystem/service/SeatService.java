@@ -2,13 +2,16 @@ package com.numble.reservationsystem.service;
 
 import com.numble.reservationsystem.entity.SeatStatus;
 import com.numble.reservationsystem.entity.SeatType;
+import com.numble.reservationsystem.entity.UserRole;
 import com.numble.reservationsystem.entity.domain.Seat;
 import com.numble.reservationsystem.entity.domain.Show;
+import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.dto.Seat.SeatRegisterDto;
 import com.numble.reservationsystem.entity.dto.Seat.SeatResponseDto;
 import com.numble.reservationsystem.entity.dto.Seat.SeatUpdateRequestDto;
 import com.numble.reservationsystem.repository.SeatRepository;
 import com.numble.reservationsystem.repository.ShowRepository;
+import com.numble.reservationsystem.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ public class SeatService {
 
     private final SeatRepository seatRepository;
     private final ShowRepository showRepository;
+    private final UserRepository userRepository;
 
     /*
      * 좌석 생성 기능
@@ -34,10 +38,21 @@ public class SeatService {
      * 3. 후에 좌석 예약시에는 AVAILABLE만 예약이 가능하다.
      * */
     @Transactional
-    public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto) {
+    public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto, String userEmail) {
         // 공연 관리자만 가능해야 함.
-        Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
         Show show = showRepository.findById(seatRegisterDto.getShowId()).orElseThrow();
+
+        if (user.getRole().equals(UserRole.USER)) {
+            log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
+        }
+
+        Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
+
+        if (!user.getRole().equals(UserRole.ADMIN) && !show.checkEmail(userEmail)) {
+            log.info("공연 등록자와 등록자를 제외하면 좌석 등록 불가능");
+        }
+
         List<SeatResponseDto> seatList = new ArrayList<>();
 
         // 로직 분리 필요
@@ -72,8 +87,12 @@ public class SeatService {
      * 5. 수정로직은 Transactional을 통한 더티체킹을 사용한다.
      * */
     @Transactional
-    public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto) {
+    public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto, String userEmail) {
         Seat seat = seatRepository.findById(updateRequestDto.getId()).orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        if (!user.getRole().equals(UserRole.ADMIN) && !seat.getShow().checkEmail(userEmail)) {
+            log.info("관리자 또는 공연 등록자만 업데이트 가능");
+        }
         if (updateRequestDto.getStatus().equals(SeatStatus.FORBIDDEN) && seat.getStatus().equals(SeatStatus.BOOKED)) {
             log.info("예매된 좌석은 비공개처리 불가능");
         }
@@ -84,7 +103,7 @@ public class SeatService {
     /*
     * 좌석 조회 기능
     * */
-    public SeatResponseDto getSeatRepository(Long seadId) {
+    public SeatResponseDto getSeatInfo(Long seadId) {
         return SeatResponseDto.of(seatRepository.findById(seadId).orElseThrow());
     }
 }
