@@ -63,4 +63,15 @@ public class TicketService {
 
         return TicketResponseDto.of(ticket);
     }
+
+    @Transactional
+    public TicketResponseDto cancel(Long ticketId, String userEmail) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        for (Seat seat : ticket.getSeatList()) {
+            seat.cancelSeat();
+        }
+        ticket.cancel();
+        return TicketResponseDto.of(ticket);
+    }
 }

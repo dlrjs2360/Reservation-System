@@ -35,4 +35,8 @@ public class Ticket {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "seat_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private List<Seat> seatList;
+
+    public void cancel() {
+        this.ticketState = TicketState.CANCELED;
+    }
 }

@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -33,8 +34,15 @@ public class TicketController {
     }
 
     // 예매 취소(/ticket/{id})
+    @PatchMapping("/{ticketId}")
+    public ResponseEntity<TicketResponseDto> cancel(@PathVariable Long ticketId,
+        @ApiIgnore Authentication authentication) {
+        return ResponseEntity.status(200).body(ticketService.cancel(ticketId,
+            authentication.getName()));
+    }
 
     // 회원별 예매 내역 목록 조회(/ticket/user/{userId})
+
 
     // 예매 내역 상세 조회(/ticket/{ticketId})
 
