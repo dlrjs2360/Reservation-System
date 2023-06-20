@@ -1,6 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
-import com.numble.reservationsystem.entity.SeatStatus;
+import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.dto.seat.SeatUpdateRequestDto;
 import lombok.AccessLevel;
@@ -30,7 +30,7 @@ public class Seat {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SeatStatus status;
+    private SeatState status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "concert_id")
@@ -45,6 +45,14 @@ public class Seat {
         if (updateRequestDto.getType() != null) {this.type = updateRequestDto.getType();}
         if (updateRequestDto.getNumber() != null) {this.number = updateRequestDto.getNumber();}
         if (updateRequestDto.getStatus() != null) {this.status = updateRequestDto.getStatus();}
+    }
+
+    public void bookSeat() {
+        this.status = SeatState.BOOKED;
+    }
+
+    public void cancelSeat(){
+        this.status = SeatState.AVAILABLE;
     }
 
 }

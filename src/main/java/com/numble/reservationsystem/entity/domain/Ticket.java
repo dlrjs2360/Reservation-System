@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.TicketState;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Ticket {
     private Long id;
 
     @Column(nullable = false)
-    private boolean isCanceled;
+    private TicketState ticketState;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
@@ -33,5 +34,5 @@ public class Ticket {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "seat_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private List<Seat> seat;
+    private List<Seat> seatList;
 }
