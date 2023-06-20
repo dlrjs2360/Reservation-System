@@ -1,5 +1,7 @@
 package com.numble.reservationsystem.service;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.domain.Concert;
 import com.numble.reservationsystem.entity.domain.Seat;
@@ -40,7 +42,11 @@ public class TicketService {
         User user = userRepository.findByEmail(userEmail).orElseThrow();
         Concert concert = concertRepository.findById(ticketRequestDto.getConcertId()).orElseThrow();
 
-        List<Seat> seatList = ticketRequestDto.getSeatIdList().stream()
+        Gson gson = new Gson();
+        List<Long> seatRequestList = gson.fromJson(ticketRequestDto.getSeatIdList(),
+            new TypeToken<List<Long>>() {}.getType());
+
+        List<Seat> seatList = seatRequestList.stream()
             .map(seatRepository::findById)
             .map(Optional::orElseThrow)
             .collect(Collectors.toList());
@@ -68,10 +74,21 @@ public class TicketService {
     public TicketResponseDto cancel(Long ticketId, String userEmail) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
+        // 권한 예외처리 필요
         for (Seat seat : ticket.getSeatList()) {
             seat.cancelSeat();
         }
         ticket.cancel();
         return TicketResponseDto.of(ticket);
     }
+
+    @Transactional
+    public List<TicketResponseDto> findByUserID(String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        List<Ticket> ticketList = ticketRepository.findByUser(user);
+        return ticketList.stream()
+            .map(TicketResponseDto::of)
+            .collect(Collectors.toList());
+    }
+
 }

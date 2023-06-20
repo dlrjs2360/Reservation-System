@@ -53,7 +53,7 @@ public class Concert extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

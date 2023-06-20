@@ -42,7 +42,7 @@ public class SeatService {
     public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto, String userEmail) {
         // 공연 관리자만 가능해야 함.
         User user = userRepository.findByEmail(userEmail).orElseThrow();
-        Concert concert = concertRepository.findById(seatRegisterDto.getShowId()).orElseThrow();
+        Concert concert = concertRepository.findById(seatRegisterDto.getConcertId()).orElseThrow();
 
         if (user.getRole().equals(UserRole.USER)) {
             log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
@@ -62,7 +62,7 @@ public class SeatService {
                 Seat seat = Seat.builder()
                     .type(seatTypeInfo.get(entry.getKey()))
                     .number(entry.getKey() + String.valueOf(i))
-                    .status(SeatState.FORBIDDEN)
+                    .status(SeatState.AVAILABLE)
                     .concert(concert)
                     .build();
                 // 좌석 저장
