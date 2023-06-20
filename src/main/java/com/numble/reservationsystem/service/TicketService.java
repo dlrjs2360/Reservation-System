@@ -51,12 +51,6 @@ public class TicketService {
             .map(Optional::orElseThrow)
             .collect(Collectors.toList());
 
-        for (Seat seat : seatList) {
-            if (!seat.getStatus().equals(SeatState.AVAILABLE)) {
-                log.info("예매 가능한 좌석이 아닙니다.");
-            }
-            seat.bookSeat();
-        }
 
         Ticket ticket = Ticket.builder()
             .ticketState(TicketState.ALIVE)
@@ -64,6 +58,14 @@ public class TicketService {
             .concert(concert)
             .seatList(seatList)
             .build();
+
+        for (Seat seat : seatList) {
+            if (!seat.getStatus().equals(SeatState.AVAILABLE)) {
+                log.info("예매 가능한 좌석이 아닙니다.");
+            }
+            seat.bookSeat();
+            seat.setTicket(ticket);
+        }
 
         ticketRepository.save(ticket);
 

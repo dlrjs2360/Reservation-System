@@ -65,4 +65,8 @@ public class Seat {
         this.status = SeatState.AVAILABLE;
     }
 
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
 }
