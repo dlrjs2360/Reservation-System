@@ -1,12 +1,12 @@
-package com.numble.reservationsystem.repository.impl;
+package com.numble.reservationsystem.repository.Impl;
 
 import static com.numble.reservationsystem.entity.domain.QUser.user;
 
 import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.exception.CustomException;
 import com.numble.reservationsystem.exception.handler.ErrorCode;
-import com.numble.reservationsystem.repository.UserRepositoryCustom;
-import com.numble.reservationsystem.repository.support.Querydsl4RepositorySupport;
+import com.numble.reservationsystem.repository.Custom.UserRepositoryCustom;
+import com.numble.reservationsystem.repository.Support.Querydsl4RepositorySupport;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 

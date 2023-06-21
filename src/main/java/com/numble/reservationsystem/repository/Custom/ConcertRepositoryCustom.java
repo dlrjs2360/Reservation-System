@@ -1,4 +1,4 @@
-package com.numble.reservationsystem.repository;
+package com.numble.reservationsystem.repository.Custom;
 
 import com.numble.reservationsystem.entity.ConcertState;
 import com.numble.reservationsystem.entity.domain.Concert;

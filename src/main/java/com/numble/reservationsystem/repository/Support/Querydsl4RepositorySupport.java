@@ -1,4 +1,4 @@
-package com.numble.reservationsystem.repository.support;
+package com.numble.reservationsystem.repository.Support;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;

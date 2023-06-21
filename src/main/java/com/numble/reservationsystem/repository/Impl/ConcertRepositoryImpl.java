@@ -1,15 +1,14 @@
-package com.numble.reservationsystem.repository.impl;
+package com.numble.reservationsystem.repository.Impl;
 
 import static com.numble.reservationsystem.entity.domain.QConcert.concert;
-import static com.numble.reservationsystem.entity.domain.QSeat.seat;
 import static com.querydsl.jpa.JPAExpressions.select;
 
 import com.numble.reservationsystem.entity.ConcertState;
 import com.numble.reservationsystem.entity.domain.Concert;
 import com.numble.reservationsystem.exception.CustomException;
 import com.numble.reservationsystem.exception.handler.ErrorCode;
-import com.numble.reservationsystem.repository.ConcertRepositoryCustom;
-import com.numble.reservationsystem.repository.support.Querydsl4RepositorySupport;
+import com.numble.reservationsystem.repository.Custom.ConcertRepositoryCustom;
+import com.numble.reservationsystem.repository.Support.Querydsl4RepositorySupport;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +35,6 @@ public class ConcertRepositoryImpl extends Querydsl4RepositorySupport implements
         return Optional.ofNullable(select(concert)
             .where(concert.id.eq(concertId))
             .fetchFirst())
-            .orElseThrow(() -> new CustomException(ErrorCode.Concert_NOT_EXISTS));
+            .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_EXISTS));
     }
 }
