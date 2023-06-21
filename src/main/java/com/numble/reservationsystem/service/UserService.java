@@ -40,7 +40,6 @@ public class UserService {
     @Transactional
     public UserResponseDto login(UserRequestDto requestDto, HttpServletResponse response) {
         User user = userRepository.findByEmail(requestDto.getEmail());
-
         if (!isValidPassword(requestDto.getPassword(), user.getPassword())) {
             return null; // 예외 처리 추가
         }
