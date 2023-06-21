@@ -34,7 +34,7 @@ public class ConcertService {
 
     @Transactional
     public ConcertResponseDto update(ConcertRequestDto requestDto, String userEmail) {
-        Concert concert = concertRepository.findById(requestDto.getId()).orElseThrow();
+        Concert concert = concertRepository.findByIdCustom(requestDto.getId());
         if (!concert.checkEmail(userEmail)) {
             log.info("작성자 불일치 익셉션");
         }
@@ -43,7 +43,7 @@ public class ConcertService {
     }
 
     public ConcertResponseDto getDetail(Long showId, String userEmail) {
-        Concert concert = concertRepository.findById(showId).orElseThrow();
+        Concert concert = concertRepository.findByIdCustom(showId);
         User user = userRepository.findByEmail(userEmail);
         if (concert.getConcertState().equals(ConcertState.DELETED) && user.getRole().equals(UserRole.ADMIN) && !concert.checkEmail(userEmail)) {
             log.info("삭제된 컨텐츠는 작성자와 관리자를 제외하면 열람 불가");

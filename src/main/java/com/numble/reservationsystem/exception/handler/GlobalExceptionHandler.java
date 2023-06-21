@@ -43,6 +43,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handlerException(Exception e) {
         log.error("Exception : " + e.getMessage());
-        return ResponseEntity.status(500).body("에러코드 정의해줘...");
+        return ResponseEntity.status(500).body(e.getCause().getMessage());
     }
 }

@@ -58,6 +58,7 @@ public class Concert extends BaseEntity {
     private User user;
 
     public static Concert toEntity(ConcertRequestDto requestDto, User user) {
+
         return Concert.builder()
             .title(requestDto.getTitle())
             .content(requestDto.getContent())
