@@ -27,7 +27,7 @@ public class ConcertService {
 
     @Transactional
     public ConcertResponseDto register(ConcertRequestDto requestDto, String userEmail) {
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         Concert concert = concertRepository.save(Concert.toEntity(requestDto,user));
         return ConcertResponseDto.of(concert);
     }
@@ -44,7 +44,7 @@ public class ConcertService {
 
     public ConcertResponseDto getDetail(Long showId, String userEmail) {
         Concert concert = concertRepository.findById(showId).orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         if (concert.getConcertState().equals(ConcertState.DELETED) && user.getRole().equals(UserRole.ADMIN) && !concert.checkEmail(userEmail)) {
             log.info("삭제된 컨텐츠는 작성자와 관리자를 제외하면 열람 불가");
         }

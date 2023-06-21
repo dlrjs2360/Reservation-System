@@ -39,7 +39,7 @@ public class TicketService {
     @Transactional
     public TicketResponseDto makeTicket(TicketRequestDto ticketRequestDto, String userEmail) {
 
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         Concert concert = concertRepository.findById(ticketRequestDto.getConcertId()).orElseThrow();
 
         Gson gson = new Gson();
@@ -75,7 +75,7 @@ public class TicketService {
     @Transactional
     public TicketResponseDto cancel(Long ticketId, String userEmail) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         // 권한 예외처리 필요
         for (Seat seat : ticket.getSeatList()) {
             seat.cancelSeat();
@@ -86,7 +86,7 @@ public class TicketService {
 
     @Transactional
     public List<TicketResponseDto> findByUserID(String userEmail) {
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         List<Ticket> ticketList = ticketRepository.findByUser(user);
         return ticketList.stream()
             .map(TicketResponseDto::of)

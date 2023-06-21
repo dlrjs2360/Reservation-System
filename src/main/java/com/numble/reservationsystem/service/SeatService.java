@@ -41,7 +41,7 @@ public class SeatService {
     @Transactional
     public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto, String userEmail) {
         // 공연 관리자만 가능해야 함.
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         Concert concert = concertRepository.findById(seatRegisterDto.getConcertId()).orElseThrow();
 
         if (user.getRole().equals(UserRole.USER)) {
@@ -89,7 +89,7 @@ public class SeatService {
     @Transactional
     public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto, String userEmail) {
         Seat seat = seatRepository.findById(updateRequestDto.getId()).orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
         if (!user.getRole().equals(UserRole.ADMIN) && !seat.getConcert().checkEmail(userEmail)) {
             log.info("관리자 또는 공연 등록자만 업데이트 가능");
         }

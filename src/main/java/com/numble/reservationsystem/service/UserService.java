@@ -39,7 +39,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto login(UserRequestDto requestDto, HttpServletResponse response) {
-        User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(requestDto.getEmail());
 
         if (!isValidPassword(requestDto.getPassword(), user.getPassword())) {
             return null; // 예외 처리 추가
@@ -56,11 +56,12 @@ public class UserService {
     }
 
     public UserResponseDto findMemberByEmail(String email) {
-        return UserResponseDto.of(userRepository.findByEmail(email).orElseThrow());
+        return UserResponseDto.of(userRepository.findByEmail(email));
     }
 
     public List<UserResponseDto> findAll() {
-        return userRepository.findAll().stream()
+        return userRepository.findAll()
+            .stream()
             .map(UserResponseDto::of)
             .collect(Collectors.toList());
     }
