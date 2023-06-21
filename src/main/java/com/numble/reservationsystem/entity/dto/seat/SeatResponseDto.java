@@ -1,6 +1,6 @@
 package com.numble.reservationsystem.entity.dto.seat;
 
-import com.numble.reservationsystem.entity.SeatStatus;
+import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.domain.Seat;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class SeatResponseDto {
     private Long id;
     private SeatType type;
     private String number;
-    private SeatStatus status;
+    private SeatState status;
     private String concertTitle;
 
     public static SeatResponseDto of(Seat seat) {

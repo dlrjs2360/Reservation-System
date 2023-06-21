@@ -1,5 +1,8 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.numble.reservationsystem.entity.TicketState;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,17 +24,20 @@ public class Ticket {
     private Long id;
 
     @Column(nullable = false)
-    private boolean isCanceled;
+    private TicketState ticketState;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Concert concert;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "seat_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private List<Seat> seat;
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private List<Seat> seatList;
+
+    public void cancel() {
+        this.ticketState = TicketState.CANCELED;
+    }
 }

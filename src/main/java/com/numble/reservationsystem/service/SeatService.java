@@ -1,6 +1,6 @@
 package com.numble.reservationsystem.service;
 
-import com.numble.reservationsystem.entity.SeatStatus;
+import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.UserRole;
 import com.numble.reservationsystem.entity.domain.Seat;
@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SeatService {
@@ -42,7 +42,7 @@ public class SeatService {
     public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto, String userEmail) {
         // 공연 관리자만 가능해야 함.
         User user = userRepository.findByEmail(userEmail).orElseThrow();
-        Concert concert = concertRepository.findById(seatRegisterDto.getShowId()).orElseThrow();
+        Concert concert = concertRepository.findById(seatRegisterDto.getConcertId()).orElseThrow();
 
         if (user.getRole().equals(UserRole.USER)) {
             log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
@@ -62,7 +62,7 @@ public class SeatService {
                 Seat seat = Seat.builder()
                     .type(seatTypeInfo.get(entry.getKey()))
                     .number(entry.getKey() + String.valueOf(i))
-                    .status(SeatStatus.FORBIDDEN)
+                    .status(SeatState.AVAILABLE)
                     .concert(concert)
                     .build();
                 // 좌석 저장
@@ -93,7 +93,8 @@ public class SeatService {
         if (!user.getRole().equals(UserRole.ADMIN) && !seat.getConcert().checkEmail(userEmail)) {
             log.info("관리자 또는 공연 등록자만 업데이트 가능");
         }
-        if (updateRequestDto.getStatus().equals(SeatStatus.FORBIDDEN) && seat.getStatus().equals(SeatStatus.BOOKED)) {
+        if (updateRequestDto.getStatus().equals(SeatState.FORBIDDEN) && seat.getStatus().equals(
+            SeatState.BOOKED)) {
             log.info("예매된 좌석은 비공개처리 불가능");
         }
         seat.update(updateRequestDto);

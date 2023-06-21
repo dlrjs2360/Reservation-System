@@ -60,6 +60,9 @@ dependencies {
     implementation "com.querydsl:querydsl-core:${queryDslVersion}"
     implementation "com.querydsl:querydsl-collections:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt"
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 tasks.named('test') {
