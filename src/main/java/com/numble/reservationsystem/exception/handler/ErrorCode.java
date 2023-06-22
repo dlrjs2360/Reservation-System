@@ -21,6 +21,8 @@ public enum ErrorCode {
     EMAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "존재하지 않는 이메일입니다"),
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다"),
     USER_NOT_MATCH(HttpStatus.INTERNAL_SERVER_ERROR, "유저 정보가 일치하지 않습니다"),
+    PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST,"비밀번호가 일치하지 않습니다."),
+    EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"이미 가입된 이메일입니다."),
 
     // Concert
     CONCERT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글입니다"),

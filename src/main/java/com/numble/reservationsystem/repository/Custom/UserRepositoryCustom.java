@@ -6,4 +6,5 @@ public interface UserRepositoryCustom {
 
     User findByEmail(String email);
 
+    boolean existsByEmail(String email);
 }
