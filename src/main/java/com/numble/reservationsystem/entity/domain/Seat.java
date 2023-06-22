@@ -33,7 +33,7 @@ public class Seat {
     private SeatState status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concert_id")
+    @JoinColumn(name = "concert_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Concert concert;
 
     @ManyToOne(fetch = FetchType.LAZY)

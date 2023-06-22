@@ -41,8 +41,8 @@ public class SeatService {
     @Transactional
     public List<SeatResponseDto> registerSeatList(SeatRegisterDto seatRegisterDto, String userEmail) {
         // 공연 관리자만 가능해야 함.
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
-        Concert concert = concertRepository.findById(seatRegisterDto.getConcertId()).orElseThrow();
+        User user = userRepository.findByEmail(userEmail);
+        Concert concert = concertRepository.findByIdCustom(seatRegisterDto.getConcertId());
 
         if (user.getRole().equals(UserRole.USER)) {
             log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
@@ -88,8 +88,8 @@ public class SeatService {
      * */
     @Transactional
     public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto, String userEmail) {
-        Seat seat = seatRepository.findById(updateRequestDto.getId()).orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        Seat seat = seatRepository.findByIdCustom(updateRequestDto.getId());
+        User user = userRepository.findByEmail(userEmail);
         if (!user.getRole().equals(UserRole.ADMIN) && !seat.getConcert().checkEmail(userEmail)) {
             log.info("관리자 또는 공연 등록자만 업데이트 가능");
         }
@@ -105,11 +105,11 @@ public class SeatService {
     * 좌석 조회 기능
     * */
     public SeatResponseDto getSeatInfo(Long seadId) {
-        return SeatResponseDto.of(seatRepository.findById(seadId).orElseThrow());
+        return SeatResponseDto.of(seatRepository.findByIdCustom(seadId));
     }
 
     public List<SeatResponseDto> findSeatsByConcertId(Long concertId) {
-        Concert concert = concertRepository.findById(concertId).orElseThrow();
+        Concert concert = concertRepository.findByIdCustom(concertId);
         return seatRepository.findAll().stream()
             .filter(s -> s.getConcert().equals(concert))
             .map(SeatResponseDto::of)

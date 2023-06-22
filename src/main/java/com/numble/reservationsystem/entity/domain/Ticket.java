@@ -1,8 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.numble.reservationsystem.entity.TicketState;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
