@@ -4,6 +4,8 @@ import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.dto.seat.SeatUpdateRequestDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,16 +60,17 @@ public class Seat extends BaseEntity {
         }
     }
 
-    public void bookSeat() {
+    public void bookSeat(Ticket ticket) {
+        if (!this.status.equals(SeatState.AVAILABLE)){
+            throw new CustomException(ErrorCode.SEAT_NOT_AVAILABLE);
+        }
         this.status = SeatState.BOOKED;
+        this.ticket = ticket;
     }
 
     public void cancelSeat(){
         this.status = SeatState.AVAILABLE;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
 
 }

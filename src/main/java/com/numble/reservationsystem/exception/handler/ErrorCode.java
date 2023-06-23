@@ -18,21 +18,25 @@ public enum ErrorCode {
     NOT_IMPLEMENTED(HttpStatus.NOT_IMPLEMENTED, "구현되지 않은 기능입니다"),                       //  501
 
     // User
-    EMAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "존재하지 않는 이메일입니다"),
+    EMAIL_NOT_EXISTS(HttpStatus.NOT_FOUND, "존재하지 않는 이메일입니다"),
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다"),
     USER_NOT_MATCH(HttpStatus.INTERNAL_SERVER_ERROR, "유저 정보가 일치하지 않습니다"),
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST,"비밀번호가 일치하지 않습니다."),
     EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"이미 가입된 이메일입니다."),
 
     // Concert
-    CONCERT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "존재하지 않는 게시글입니다"),
+    CONCERT_NOT_EXISTS(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다"),
     CONCERT_REGISTRATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "공연정보를 등록하던 중 오류가 발생했습니다"),
     CONCERT_UPDATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "공연정보를 업데이트하던 중 오류가 발생했습니다"),
     CONCERT_DELETE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "공연정보를 삭제하던 중 오류가 발생했습니다"),
     CONCERT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다"),
 
-    // SEAT
-    SEAT_NOT_EXISTS(HttpStatus.BAD_REQUEST,"해당 좌석이 존재하지 않습니다.");
+    // Seat
+    SEAT_NOT_EXISTS(HttpStatus.NOT_FOUND,"해당 좌석이 존재하지 않습니다."),
+    SEAT_NOT_AVAILABLE(HttpStatus.BAD_REQUEST,"해당 좌석은 예약이 불가능합니다"),
+
+    // Ticket
+    TICKET_NOT_EXISTS(HttpStatus.NOT_FOUND, "해당 예매내역을 찾을 수 없습니다");
 
     private final HttpStatus status;
     private final String message;
