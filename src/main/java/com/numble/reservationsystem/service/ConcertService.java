@@ -42,13 +42,12 @@ public class ConcertService {
         return ConcertResponseDto.of(concert);
     }
 
-    public ConcertResponseDto getDetail(Long showId, String userEmail) {
-        Concert concert = concertRepository.findByIdCustom(showId);
+    public ConcertResponseDto getDetail(Long concertId, String userEmail) {
+        Concert concert = concertRepository.findByIdCustom(concertId);
         User user = userRepository.findByEmail(userEmail);
-        concert.checkEmail(userEmail);
         if (concert.getConcertState().equals(ConcertState.DELETED)
-            && user.getRole().equals(UserRole.ADMIN)) {
-            throw new CustomException(ErrorCode.FORBIDDEN);
+            && !user.getRole().equals(UserRole.ADMIN)) {
+            concert.checkEmail(userEmail);
         }
         return ConcertResponseDto.of(concert);
     }

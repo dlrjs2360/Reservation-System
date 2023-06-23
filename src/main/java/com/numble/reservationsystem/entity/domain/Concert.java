@@ -87,7 +87,7 @@ public class Concert extends BaseEntity {
     }
 
     public void checkEmail(String userEmail) {
-        if (this.user.getEmail().equals(userEmail)){
+        if (!this.user.getEmail().equals(userEmail)){
             throw new CustomException(ErrorCode.USER_NOT_MATCH);
         };
     }
