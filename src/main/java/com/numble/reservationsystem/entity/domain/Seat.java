@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.domain;
 
+import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.SeatState;
 import com.numble.reservationsystem.entity.SeatType;
 import com.numble.reservationsystem.entity.dto.seat.SeatUpdateRequestDto;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Table(name = "seat")
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seat {
+public class Seat extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_id ")

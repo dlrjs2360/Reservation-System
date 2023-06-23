@@ -46,10 +46,7 @@ public class UserService {
         User user = userRepository.findByEmail(requestDto.getEmail());
         isValidPassword(requestDto.getPassword(), user.getPassword());
 
-        // 액세스,리프레쉬 토큰 생성
         Token token = jwtProvider.generateJwtToken(user.getEmail(), SECRET_KEY);
-
-        // 헤더에 토큰 저장
         jwtProvider.setHeaderAccessToken(response, token.getAccessToken());
         jwtProvider.setHeaderRefreshToken(response, token.getRefreshToken());
 

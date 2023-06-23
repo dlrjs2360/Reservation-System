@@ -4,6 +4,8 @@ import com.numble.reservationsystem.entity.BaseEntity;
 import com.numble.reservationsystem.entity.Category;
 import com.numble.reservationsystem.entity.ConcertState;
 import com.numble.reservationsystem.entity.dto.concert.ConcertRequestDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -84,7 +86,9 @@ public class Concert extends BaseEntity {
         this.location = requestDto.getLocation();
     }
 
-    public boolean checkEmail(String userEmail) {
-        return this.user.getEmail().equals(userEmail);
+    public void checkEmail(String userEmail) {
+        if (this.user.getEmail().equals(userEmail)){
+            throw new CustomException(ErrorCode.USER_NOT_MATCH);
+        };
     }
 }
