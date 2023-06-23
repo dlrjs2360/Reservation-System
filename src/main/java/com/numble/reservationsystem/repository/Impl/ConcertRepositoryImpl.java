@@ -25,14 +25,14 @@ public class ConcertRepositoryImpl extends Querydsl4RepositorySupport implements
 
     @Override
     public List<Concert> findAllByConcertState(ConcertState concertState) {
-        return select(concert)
+        return selectFrom(concert)
             .where(concert.concertState.eq(concertState))
             .fetch();
     }
 
     @Override
     public Concert findByIdCustom(Long concertId) {
-        return Optional.ofNullable(select(concert)
+        return Optional.ofNullable(selectFrom(concert)
             .where(concert.id.eq(concertId))
             .fetchFirst())
             .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_EXISTS));

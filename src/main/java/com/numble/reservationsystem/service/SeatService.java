@@ -9,6 +9,8 @@ import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.dto.seat.SeatRegisterDto;
 import com.numble.reservationsystem.entity.dto.seat.SeatResponseDto;
 import com.numble.reservationsystem.entity.dto.seat.SeatUpdateRequestDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import com.numble.reservationsystem.repository.SeatRepository;
 import com.numble.reservationsystem.repository.ConcertRepository;
 import com.numble.reservationsystem.repository.UserRepository;
@@ -44,12 +46,14 @@ public class SeatService {
         User user = userRepository.findByEmail(userEmail);
         Concert concert = concertRepository.findByIdCustom(seatRegisterDto.getConcertId());
 
-        if (user.getRole().equals(UserRole.USER)) {
-            log.info("관리자 및 공연 등록자만 공연 좌석 등록 가능");
-        }
-
-        if (!user.getRole().equals(UserRole.ADMIN) && !concert.checkEmail(userEmail)) {
-            log.info("공연 등록자와 등록자를 제외하면 좌석 등록 불가능");
+        switch (user.getRole()) {
+            case USER:
+                throw new CustomException(ErrorCode.FORBIDDEN);
+            case OPERATOR:
+                concert.checkEmail(userEmail);
+            case ADMIN:
+            default:
+                break;
         }
 
         Map<String, SeatType> seatTypeInfo = seatRegisterDto.getSeatTypeInfo();
@@ -89,14 +93,7 @@ public class SeatService {
     @Transactional
     public SeatResponseDto updateSeat(SeatUpdateRequestDto updateRequestDto, String userEmail) {
         Seat seat = seatRepository.findByIdCustom(updateRequestDto.getId());
-        User user = userRepository.findByEmail(userEmail);
-        if (!user.getRole().equals(UserRole.ADMIN) && !seat.getConcert().checkEmail(userEmail)) {
-            log.info("관리자 또는 공연 등록자만 업데이트 가능");
-        }
-        if (updateRequestDto.getStatus().equals(SeatState.FORBIDDEN) && seat.getStatus().equals(
-            SeatState.BOOKED)) {
-            log.info("예매된 좌석은 비공개처리 불가능");
-        }
+        seat.getConcert().checkEmail(userEmail);
         seat.update(updateRequestDto);
         return SeatResponseDto.of(seat);
     }

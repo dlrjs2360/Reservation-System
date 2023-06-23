@@ -10,6 +10,8 @@ import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.TicketState;
 import com.numble.reservationsystem.entity.dto.ticket.TicketRequestDto;
 import com.numble.reservationsystem.entity.dto.ticket.TicketResponseDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import com.numble.reservationsystem.repository.ConcertRepository;
 import com.numble.reservationsystem.repository.SeatRepository;
 import com.numble.reservationsystem.repository.TicketRepository;
@@ -51,7 +53,6 @@ public class TicketService {
             .map(Optional::orElseThrow)
             .collect(Collectors.toList());
 
-
         Ticket ticket = Ticket.builder()
             .ticketState(TicketState.ALIVE)
             .user(user)
@@ -60,11 +61,7 @@ public class TicketService {
             .build();
 
         for (Seat seat : seatList) {
-            if (!seat.getStatus().equals(SeatState.AVAILABLE)) {
-                log.info("예매 가능한 좌석이 아닙니다.");
-            }
-            seat.bookSeat();
-            seat.setTicket(ticket);
+            seat.bookSeat(ticket);
         }
 
         ticketRepository.save(ticket);
@@ -74,9 +71,11 @@ public class TicketService {
 
     @Transactional
     public TicketResponseDto cancel(Long ticketId, String userEmail) {
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        Ticket ticket = ticketRepository.findByIdCustom(ticketId);
         User user = userRepository.findByEmail(userEmail);
-        // 권한 예외처리 필요
+        if (!ticket.getUser().equals(userEmail)) {
+            throw new CustomException(ErrorCode.USER_NOT_MATCH);
+        }
         for (Seat seat : ticket.getSeatList()) {
             seat.cancelSeat();
         }
@@ -86,11 +85,14 @@ public class TicketService {
 
     @Transactional
     public List<TicketResponseDto> findByUserID(String userEmail) {
-        User user = userRepository.findByEmail(userEmail);
-        List<Ticket> ticketList = ticketRepository.findByUser(user);
+        List<Ticket> ticketList = ticketRepository.findByUserCustom(userEmail);
         return ticketList.stream()
             .map(TicketResponseDto::of)
             .collect(Collectors.toList());
+    }
+
+    public TicketResponseDto findById(Long ticketId) {
+        return TicketResponseDto.of(ticketRepository.findByIdCustom(ticketId));
     }
 
 }

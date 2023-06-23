@@ -5,6 +5,8 @@ import com.numble.reservationsystem.entity.Token;
 import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
 import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import com.numble.reservationsystem.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +33,9 @@ public class UserService {
 
     @Transactional
     public UserResponseDto register(UserRequestDto requestDto) {
-        // 이미 존재하는 유저인지 확인 예외처리 필요
+        if (userRepository.existsByEmail(requestDto.getEmail())){
+            throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        }
         User user = User.toEntity(requestDto);
         user.encodePassword(passwordEncoder.encode(requestDto.getPassword()));
         return UserResponseDto.of(userRepository.save(user));
@@ -40,14 +44,9 @@ public class UserService {
     @Transactional
     public UserResponseDto login(UserRequestDto requestDto, HttpServletResponse response) {
         User user = userRepository.findByEmail(requestDto.getEmail());
-        if (!isValidPassword(requestDto.getPassword(), user.getPassword())) {
-            return null; // 예외 처리 추가
-        }
+        isValidPassword(requestDto.getPassword(), user.getPassword());
 
-        // 액세스,리프레쉬 토큰 생성
         Token token = jwtProvider.generateJwtToken(user.getEmail(), SECRET_KEY);
-
-        // 헤더에 토큰 저장
         jwtProvider.setHeaderAccessToken(response, token.getAccessToken());
         jwtProvider.setHeaderRefreshToken(response, token.getRefreshToken());
 
@@ -65,7 +64,9 @@ public class UserService {
             .collect(Collectors.toList());
     }
 
-    public boolean isValidPassword(String input, String encoded) {
-        return passwordEncoder.matches(input, encoded);
+    public void isValidPassword(String input, String encoded) {
+        if (!passwordEncoder.matches(input, encoded)){
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
     }
 }

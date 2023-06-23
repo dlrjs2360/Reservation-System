@@ -45,12 +45,18 @@ public class TicketController {
 
     // 회원별 예매 내역 목록 조회(/ticket/user/{userId})
     @GetMapping("/myTickets")
-    public ResponseEntity<List<TicketResponseDto>> findByUserId(@ApiIgnore Authentication authentication) {
-        return ResponseEntity.status(200).body(ticketService.findByUserID(authentication.getName()));
+    public ResponseEntity<List<TicketResponseDto>> findByUserId(
+        @ApiIgnore Authentication authentication) {
+        return ResponseEntity.status(200)
+            .body(ticketService.findByUserID(authentication.getName()));
     }
 
-
-
     // 예매 내역 상세 조회(/ticket/{ticketId})
+    @GetMapping("/{ticketId}")
+    public ResponseEntity<TicketResponseDto> findbyTicketId(
+        @ApiIgnore Authentication authentication,
+        @PathVariable Long ticketId) {
+        return ResponseEntity.status(200).body(ticketService.findById(ticketId));
 
+    }
 }

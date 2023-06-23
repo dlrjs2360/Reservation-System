@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class SeatRepositoryImpl extends Querydsl4RepositorySupport implements SeatRepositoryCustom {
 
-    public SeatRepositoryImpl(Class<?> domainClass) {
-        super(domainClass);
+    public SeatRepositoryImpl() {
+        super(Seat.class);
     }
-
 
     @Override
     public Seat findByIdCustom(Long seatId) {

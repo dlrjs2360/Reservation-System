@@ -25,9 +25,18 @@ public class UserRepositoryImpl extends Querydsl4RepositorySupport implements Us
     @Override
     public User findByEmail(String email) {
         return Optional.ofNullable(
-            selectFrom(user)
-            .where(user.email.eq(email))
-            .fetchOne())
+                selectFrom(user)
+                    .where(user.email.eq(email))
+                    .fetchOne())
             .orElseThrow(() -> new CustomException(ErrorCode.EMAIL_NOT_EXISTS));
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return Optional.ofNullable(
+            selectFrom(user)
+                .where(user.email.eq(email))
+                .fetchOne()
+        ).isPresent();
     }
 }

@@ -7,6 +7,8 @@ import com.numble.reservationsystem.entity.domain.Concert;
 import com.numble.reservationsystem.entity.domain.User;
 import com.numble.reservationsystem.entity.dto.concert.ConcertRequestDto;
 import com.numble.reservationsystem.entity.dto.concert.ConcertResponseDto;
+import com.numble.reservationsystem.exception.CustomException;
+import com.numble.reservationsystem.exception.handler.ErrorCode;
 import com.numble.reservationsystem.repository.ConcertRepository;
 import com.numble.reservationsystem.repository.UserRepository;
 import java.util.List;
@@ -28,25 +30,24 @@ public class ConcertService {
     @Transactional
     public ConcertResponseDto register(ConcertRequestDto requestDto, String userEmail) {
         User user = userRepository.findByEmail(userEmail);
-        Concert concert = concertRepository.save(Concert.toEntity(requestDto,user));
+        Concert concert = concertRepository.save(Concert.toEntity(requestDto, user));
         return ConcertResponseDto.of(concert);
     }
 
     @Transactional
     public ConcertResponseDto update(ConcertRequestDto requestDto, String userEmail) {
         Concert concert = concertRepository.findByIdCustom(requestDto.getId());
-        if (!concert.checkEmail(userEmail)) {
-            log.info("작성자 불일치 익셉션");
-        }
+        concert.checkEmail(userEmail);
         concert.update(requestDto);
         return ConcertResponseDto.of(concert);
     }
 
-    public ConcertResponseDto getDetail(Long showId, String userEmail) {
-        Concert concert = concertRepository.findByIdCustom(showId);
+    public ConcertResponseDto getDetail(Long concertId, String userEmail) {
+        Concert concert = concertRepository.findByIdCustom(concertId);
         User user = userRepository.findByEmail(userEmail);
-        if (concert.getConcertState().equals(ConcertState.DELETED) && user.getRole().equals(UserRole.ADMIN) && !concert.checkEmail(userEmail)) {
-            log.info("삭제된 컨텐츠는 작성자와 관리자를 제외하면 열람 불가");
+        if (concert.getConcertState().equals(ConcertState.DELETED)
+            && !user.getRole().equals(UserRole.ADMIN)) {
+            concert.checkEmail(userEmail);
         }
         return ConcertResponseDto.of(concert);
     }
@@ -57,9 +58,6 @@ public class ConcertService {
             .map(ConcertResponseDto::of)
             .collect(Collectors.toList());
     }
-
-
-
 
 
 }
