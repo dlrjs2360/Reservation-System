@@ -20,7 +20,7 @@ Numble 딥다이브 챌린지를 위해 개발한 대용량 처리 예매 시스
 | MySQL | x.x.x |
 
 
-## ERD
+## ERD (수정 중)
 
 ![스크린샷 2023-06-25 오후 1 17 20](https://github.com/dlrjs2360/Reservation-System/assets/81156109/1aed4119-cbda-413b-b2da-f8c5ff638590)
 
