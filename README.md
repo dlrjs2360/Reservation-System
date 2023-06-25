@@ -1,4 +1,4 @@
-# Reservation-System
+# Reservation-System (개발 중)
 
 Numble 딥다이브 챌린지를 위해 개발한 대용량 처리 예매 시스템 API 서버
 
