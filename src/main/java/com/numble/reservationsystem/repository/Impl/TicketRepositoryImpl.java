@@ -32,7 +32,6 @@ public class TicketRepositoryImpl extends Querydsl4RepositorySupport implements
     public List<Ticket> findByUserCustom(String userEmail) {
         return selectFrom(ticket)
             .where(ticket.user.email.eq(userEmail))
-            .fetchJoin()
             .fetch();
     }
 }

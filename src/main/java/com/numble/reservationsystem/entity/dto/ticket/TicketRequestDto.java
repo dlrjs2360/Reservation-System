@@ -1,6 +1,8 @@
 package com.numble.reservationsystem.entity.dto.ticket;
 
 import com.numble.reservationsystem.entity.TicketState;
+import java.io.Serializable;
+import java.util.LinkedHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

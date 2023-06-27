@@ -42,7 +42,7 @@ public class TicketService {
     public TicketResponseDto makeTicket(TicketRequestDto ticketRequestDto, String userEmail) {
 
         User user = userRepository.findByEmail(userEmail);
-        Concert concert = concertRepository.findById(ticketRequestDto.getConcertId()).orElseThrow();
+        Concert concert = concertRepository.findByIdCustom(ticketRequestDto.getConcertId());
 
         Gson gson = new Gson();
         List<Long> seatRequestList = gson.fromJson(ticketRequestDto.getSeatIdList(),
@@ -60,9 +60,7 @@ public class TicketService {
             .seatList(seatList)
             .build();
 
-        for (Seat seat : seatList) {
-            seat.bookSeat(ticket);
-        }
+        for (Seat seat : seatList) { seat.bookSeat(ticket);}
 
         ticketRepository.save(ticket);
 
@@ -76,9 +74,7 @@ public class TicketService {
         if (!ticket.getUser().equals(userEmail)) {
             throw new CustomException(ErrorCode.USER_NOT_MATCH);
         }
-        for (Seat seat : ticket.getSeatList()) {
-            seat.cancelSeat();
-        }
+        for (Seat seat : ticket.getSeatList()) {seat.cancelSeat();}
         ticket.cancel();
         return TicketResponseDto.of(ticket);
     }

@@ -4,9 +4,10 @@ import com.numble.reservationsystem.entity.UserRole;
 import com.numble.reservationsystem.entity.UserState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserRequestDto {
     private String name;
     private String email;

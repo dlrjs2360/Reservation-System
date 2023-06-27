@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.entity.dto.ticket;
 
+import com.numble.reservationsystem.entity.TicketState;
 import com.numble.reservationsystem.entity.domain.Ticket;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ public class TicketResponseDto {
     private String userEmail;
     private String concertTitle;
     private List<String> seatList;
+    private TicketState ticketState;
 
     public static TicketResponseDto of(Ticket ticket) {
         List<String> seatStringList = ticket.getSeatList().stream()
@@ -27,6 +29,7 @@ public class TicketResponseDto {
             .userEmail(ticket.getUser().getEmail())
             .concertTitle(ticket.getConcert().getTitle())
             .seatList(seatStringList)
+            .ticketState(ticket.getTicketState())
             .build();
     }
 }

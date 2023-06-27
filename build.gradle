@@ -63,6 +63,10 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Aop
+    implementation 'org.springframework:spring-aop'
+
 }
 
 tasks.named('test') {

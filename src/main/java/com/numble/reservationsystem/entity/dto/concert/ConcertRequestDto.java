@@ -5,9 +5,10 @@ import com.numble.reservationsystem.entity.ConcertState;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ConcertRequestDto {
     private Long id;
     private String title;

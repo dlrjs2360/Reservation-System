@@ -1,5 +1,6 @@
 package com.numble.reservationsystem.controller;
 
+import com.numble.reservationsystem.aop.LogExecutionTime;
 import com.numble.reservationsystem.entity.dto.user.UserRequestDto;
 import com.numble.reservationsystem.entity.dto.user.UserResponseDto;
 import com.numble.reservationsystem.service.UserService;
@@ -26,12 +27,14 @@ public class UserController {
 
     private final UserService userService;
 
+    @LogExecutionTime
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity<UserResponseDto> signup(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(200).body(userService.register(userRequestDto));
     }
 
+    @LogExecutionTime
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<UserResponseDto> login(@RequestBody UserRequestDto userRequestDto, @ApiIgnore HttpServletResponse response) {
